@@ -16,6 +16,7 @@ use \rico\yii2images\ModuleTrait;
 class ImagesController extends Controller
 {
     use ModuleTrait;
+
     public function actionIndex()
     {
         echo "Hello, man. It's ok, dont worry.";
@@ -31,14 +32,15 @@ class ImagesController extends Controller
      *
      * All we need is love. No.
      * We need item (by id or another property) and alias (or images number)
+     *
      * @param $item
      * @param $alias
      *
      */
-    public function actionImageByItemAndAlias($item='', $dirtyAlias)
+    public function actionImageByItemAndAlias($item = '', $dirtyAlias)
     {
         $dotParts = explode('.', $dirtyAlias);
-        if(!isset($dotParts[1])){
+        if (!isset($dotParts[1])) {
             throw new \yii\web\HttpException(404, 'Image must have extension');
         }
         $dirtyAlias = $dotParts[0];
@@ -47,14 +49,14 @@ class ImagesController extends Controller
         $alias = isset(explode('_', $dirtyAlias)[0]) ? explode('_', $dirtyAlias)[0] : false;
         $image = $this->getModule()->getImage($item, $alias);
 
-        if($image->getExtension() != $dotParts[1]){
+        if ($image->getExtension() != $dotParts[1]) {
             throw new \yii\web\HttpException(404, 'Image not found (extenstion)');
         }
 
-        if($image){
+        if ($image) {
             header('Content-Type: image/jpg');
             echo $image->getContent($size);
-        }else{
+        } else {
             throw new \yii\web\HttpException(404, 'There is no images');
         }
 

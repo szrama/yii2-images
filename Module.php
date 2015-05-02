@@ -32,31 +32,30 @@ class Module extends \yii\base\Module
         $alias = $params['alias'];
         $size = $params['size'];
 
-        $itemId = preg_replace('/[^0-9]+/', '', $item);
-        $modelName = preg_replace('/[0-9]+/', '', $item);
-
+        $modelName = substr($item, 0, -22);
+        $itemId = substr($item, -22);
 
         //Lets get image
-        if(empty($this->className)) {
+        if (empty($this->className)) {
             $imageQuery = Image::find();
         } else {
             $class = $this->className;
             $imageQuery = $class::find();
         }
         $image = $imageQuery
-            ->where([
-                'modelName' => $modelName,
-                'itemId' => $itemId,
-                'urlAlias' => $alias
-            ])
-            /*     ->where('modelName = :modelName AND itemId = :itemId AND urlAlias = :alias',
-                     [
-                         ':modelName' => $modelName,
-                         ':itemId' => $itemId,
-                         ':alias' => $alias
-                     ])*/
-            ->one();
-        if(!$image){
+          ->where([
+            'modelName' => $modelName,
+            'itemId'    => $itemId,
+            'urlAlias'  => $alias
+          ])
+          /*     ->where('modelName = :modelName AND itemId = :itemId AND urlAlias = :alias',
+                   [
+                       ':modelName' => $modelName,
+                       ':itemId' => $itemId,
+                       ':alias' => $alias
+                   ])*/
+          ->one();
+        if (!$image) {
             return $this->getPlaceHolder();
         }
 
@@ -77,12 +76,12 @@ class Module extends \yii\base\Module
 
     public function getModelSubDir($model)
     {
-     
+
         $modelName = $this->getShortClass($model);
-        $modelDir = \yii\helpers\Inflector::pluralize($modelName).'/'. $modelName . $model->id;
+        $modelDir = \yii\helpers\Inflector::pluralize($modelName) . '/' . $modelName . $model->id;
         return $modelDir;
 
-     
+
     }
 
 
@@ -113,25 +112,25 @@ class Module extends \yii\base\Module
         $part2 = (isset($sizeParts[1]) and $sizeParts[1] != '');
         if ($part1 && $part2) {
             if (intval($sizeParts[0]) > 0
-                &&
-                intval($sizeParts[1]) > 0
+              &&
+              intval($sizeParts[1]) > 0
             ) {
                 $size = [
-                    'width' => intval($sizeParts[0]),
-                    'height' => intval($sizeParts[1])
+                  'width'  => intval($sizeParts[0]),
+                  'height' => intval($sizeParts[1])
                 ];
             } else {
                 $size = null;
             }
         } elseif ($part1 && !$part2) {
             $size = [
-                'width' => intval($sizeParts[0]),
-                'height' => null
+              'width'  => intval($sizeParts[0]),
+              'height' => null
             ];
         } elseif (!$part1 && $part2) {
             $size = [
-                'width' => null,
-                'height' => intval($sizeParts[1])
+              'width'  => null,
+              'height' => intval($sizeParts[1])
             ];
         } else {
             throw new \Exception('Something bad with size, sorry!');
@@ -167,22 +166,24 @@ class Module extends \yii\base\Module
     {
         parent::init();
         if (!$this->imagesStorePath
-            or
-            !$this->imagesCachePath
-            or
-            $this->imagesStorePath == '@app'
-            or
-            $this->imagesCachePath == '@app'
-        )
+          or
+          !$this->imagesCachePath
+          or
+          $this->imagesStorePath == '@app'
+          or
+          $this->imagesCachePath == '@app'
+        ) {
             throw new \Exception('Setup imagesStorePath and imagesCachePath images module properties!!!');
+        }
         // custom initialization code goes here
     }
 
-    public function getPlaceHolder(){
+    public function getPlaceHolder()
+    {
 
-        if($this->placeHolderPath){
+        if ($this->placeHolderPath) {
             return new PlaceHolder();
-        }else{
+        } else {
             return null;
         }
     }
