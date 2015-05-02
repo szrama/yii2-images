@@ -12,13 +12,13 @@
  * @property string $urlAlias
  */
 
-namespace rico\yii2images\models;
+namespace szrama\yii2images\models;
 
 use Yii;
 use yii\base\Exception;
 use yii\helpers\Url;
 use yii\helpers\BaseFileHelper;
-use \rico\yii2images\ModuleTrait;
+use \szrama\yii2images\ModuleTrait;
 
 
 class Image extends \yii\db\ActiveRecord

@@ -6,7 +6,7 @@
  * Time: 0:20
  */
 
-namespace rico\yii2images;
+namespace szrama\yii2images;
 
 
 use yii\base\Exception;
@@ -14,12 +14,12 @@ use yii\base\Exception;
 trait ModuleTrait
 {
     /**
-     * @var null|\rico\yii2images\Module
+     * @var null|\szrama\yii2images\Module
      */
     private $_module;
 
     /**
-     * @return null|\rico\yii2images\Module
+     * @return null|\szrama\yii2images\Module
      */
     protected function getModule()
     {
@@ -27,7 +27,7 @@ trait ModuleTrait
             $this->_module = \Yii::$app->getModule('yii2images');
         }
 
-        if(!$this->_module){
+        if (!$this->_module) {
             throw new Exception("\n\n\n\n\nYii2 images module not found, may be you didn't add it to your config?\n\n\n\n");
         }
 
